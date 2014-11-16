@@ -1,0 +1,33 @@
+# Site
+title:   "Введение в программирование на Go"
+url:     "http://golang-book.ru"
+locale:  "ru"
+baseurl: ""
+
+# Source
+source:      ./src
+destination: ./build
+plugins:     ./src/_plugins
+layouts:     ./src/_layouts
+data_source: ./src/_data
+
+# Collections
+collections:
+  book:
+    output: true
+    permalink: '/:name.html'
+
+# Build
+permalink:   /:title.html
+markdown:    redcarpet
+highlighter: null
+
+# Assets
+assets:
+  js_compressor:  uglifier
+  css_compressor: sass
+  cache:          false
+
+# Markdown
+redcarpet:
+  extensions: ["no_intra_emphasis", "autolink", "strikethrough", "superscript", "tables", "highlight"]
