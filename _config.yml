@@ -19,7 +19,6 @@ collections:
 
 # Build
 permalink:   /:title.html
-markdown:    redcarpet
 highlighter: null
 
 # Assets
@@ -27,7 +26,3 @@ assets:
   js_compressor:  uglifier
   css_compressor: sass
   cache:          false
-
-# Markdown
-redcarpet:
-  extensions: ["no_intra_emphasis", "autolink", "strikethrough", "superscript", "tables", "highlight"]
