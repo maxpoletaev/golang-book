@@ -1,6 +1,6 @@
 ---
 title:  "Указатели"
-layout: "capter"
+layout: "chapter"
 
 ---
 

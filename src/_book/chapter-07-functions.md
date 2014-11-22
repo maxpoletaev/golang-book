@@ -1,6 +1,6 @@
 ---
 title:  "Функции"
-layout: "capter"
+layout: "chapter"
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 title:  "Массивы, срезы, отображения"
-layout: "capter"
+layout: "chapter"
 
 ---
 
