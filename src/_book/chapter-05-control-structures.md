@@ -1,6 +1,6 @@
 ---
 title:  "Управление потоком"
-layout: "capter"
+layout: "chapter"
 
 ---
 
