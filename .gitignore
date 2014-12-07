@@ -3,3 +3,4 @@
 build
 vendor
 Gemfile.lock
+.idea/
