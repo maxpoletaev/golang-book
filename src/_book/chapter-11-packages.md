@@ -82,31 +82,37 @@ C помощью терминала в папке `math` запустите ко
 * Имена пакетов совпадают с директориями, в которых они размещены. Данное правило можно обойти, но делать это нежелательно.
 
 
-Documentation
+## Документация к коду
 
-Go has the ability to automatically generate documentation for packages we write in a similar way to the standard package documentation. In a terminal run this command:
+Го позволяет автоматически создавать документацию к пользовательским пакетам также, как и документировать стандартные пакеты.
+Запустите эту команду в терминале
 
-godoc golang-book/chapter11/math Average
-You should see information displayed for the function we just wrote. We can improve this documentation by adding a comment before the function:
+    godoc golang-book/chapter11/math Average
 
-// Finds the average of a series of numbers
-func Average(xs []float64) float64 {
-If you run go install in the math folder, then re-run the godoc command you should see our comment below the function definition. This documentation is also available in web form by running this command:
+И Вы увидите информацию о функции, которую мы только что написали. Мы можем улучшить документацию, добавив коментарий перед функцией
 
-godoc -http=":6060"
-and entering this URL into your browser:
+    // Найти среднее в массиве чисел.
+    func Average(xs []float64) float64 {
 
-http://localhost:6060/pkg/
-You should be able to browse through all of the packages installed on your system.
+Если Вы запустите `go install`, а потом перезапустите
 
-Problems
+    godoc golang-book/chapter11/math Average
 
-Why do we use packages?
+то вы увидите наш комментарий - `Найти среднее в массиве чисел`.
+Также Вы можете увидеть документацию в интернет страницы, запустив в терминале команду
 
-What is the difference between an identifier that starts with a capital letter and one which doesn’t? (Average vs average)
+    godoc -http=":6060"
 
-What is a package alias? How do you make one?
+и открыв этот адрес в броузере `http://localhost:6060/pkg/`
 
-We copied the average function from chapter 7 to our new package. Create Min and Max functions which find the minimum and maximum values in a slice of float64s.
+Вы увидите документацию по всем пакетам, установленным в системе, в том числе и про наш пакет.
 
-How would you document the functions you created in #3?
+
+
+## Задачи
+
+* Зачем мы используем пакеты
+* Чем отличаютя программные сущности, названные с большой буквы? То есть, чем `Average` отличается от `average`?
+* Что такое псевдоним пакета и как его сделать?
+* Мы скопировали функцию `Average` из Главы 7 в наш новый пакет. Создайте `Min` и `Max` функции для нахождения наименьших и наибольших значений в срезах дробных чисел типа `float64`
+* Напишите документацию к функциям `Min` и `Max` из предыдущей задачи
