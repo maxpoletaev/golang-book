@@ -1,0 +1,69 @@
+html {
+  font-size: 18px;
+}
+
+body {
+  font-family: "Georgia", "Times New Roman", sans-serif;
+  line-height: 1.6;
+}
+
+pre, code {
+  font-family: "Ubuntu Mono";
+}
+
+h1, h2, h3, h4, h5, h6,
+p, ul, ol, table, pre {
+  margin-bottom: 15px;
+}
+
+pre {
+  border-radius: 3px;
+  background: #333;
+  line-height: 1.5;
+  padding: 20px;
+  color: #ccc;
+}
+
+img {
+  max-width: 100%;
+}
+
+p > img {
+  display: block;
+  margin: 0 auto;
+}
+
+p > code, li > code {
+  color: #b00;
+}
+
+kbd {
+  box-shadow: 1px 1px rgba(0,0,0, 0.1);
+  font-family: "Ubuntu Mono";
+  box-sizing: border-box;
+  border: 1px solid #AAA;
+  border-radius: 2px;
+  font-size: 0.8em;
+  background: #FFF;
+  padding: 3px;
+  color: #333;
+}
+
+ul, ol {
+  margin-left: 2em;
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: lighter;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: lighter;
+}
+
+h3 {
+  font-weight: lighter;
+  font-size: 1.5em;
+}
