@@ -4,4 +4,67 @@
 .container {
   margin: 0 auto;
   max-width: 800px;
+  padding-left: 100px;
+  padding-right: 100px;
+
+  @media screen and (max-width: 640px) {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+.intro {
+  margin-bottom: 50px;
+}
+
+  .intro_heading {
+    margin-bottom: 0;
+  }
+
+  .intro_author {
+    font-size: 0.8em;
+    font-style: italic;
+  }
+
+.content {
+  padding-top: 30px;
+  padding-bottom: 100px;
+
+  @media screen and (max-width: 640px) {
+    padding-bottom: 150px;
+  }
+}
+
+.footer {
+  border-top: 1px solid #ddd;
+  position: absolute;
+  font-size: 0.8rem;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+  .footer_container {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    p { margin-bottom: 0; }
+  }
+
+.prevnext {
+  overflow: hidden;
+}
+
+  .prevnext_item {
+    &.-prev {
+      float: left;
+    }
+    &.-next {
+      float: right;
+    }
+  }
+
+.github-ribbon {
+  @media screen and (max-width: 640px) {
+    display: none;
+  }
 }
