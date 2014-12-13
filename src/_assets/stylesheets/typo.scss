@@ -71,3 +71,25 @@ h3 {
   font-weight: lighter;
   font-size: 1.5em;
 }
+
+table {
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+th {
+  font-weight: bold;
+}
+
+th, td {
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+}
+
+a {
+  color: #06C;
+
+  &:hover {
+    color: #C04;
+  }
+}
