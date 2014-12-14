@@ -33,7 +33,9 @@ p > img {
   margin: 0 auto;
 }
 
-p > code, li > code {
+p > code,
+li > code,
+em > code {
   color: #b00;
 }
 
@@ -79,6 +81,7 @@ table {
 
 th {
   font-weight: bold;
+  background: #EEE;
 }
 
 th, td {
@@ -92,4 +95,25 @@ a {
   &:hover {
     color: #C04;
   }
+}
+
+em {
+  font-style: italic;
+}
+
+strong {
+  font-weight: bold;
+}
+
+sup, sub {
+  font-size: 0.75em;
+  position: relative;
+}
+
+sup {
+  top: -0.5em;
+}
+
+sub {
+  bottom: -0.25em;
 }
