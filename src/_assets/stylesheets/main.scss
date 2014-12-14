@@ -26,6 +26,32 @@
     font-style: italic;
   }
 
+.chapters {
+  margin-bottom: 50px;
+}
+
+.download {
+  margin-bottom: 15px;
+}
+
+.download_btn {
+  font-family: "Ubuntu", sans-serif;
+  border: 1px solid #2E6DA4;
+  box-sizing: border-box;
+  text-decoration: none;
+  display: inline-block;
+  background: #337AB7;
+  border-radius: 2px;
+  margin-right: 10px;
+  padding: 5px 15px;
+  color: #FFF;
+
+  &:hover {
+    color: #FFF;
+  }
+}
+
+
 .content {
   padding-top: 30px;
   padding-bottom: 100px;
