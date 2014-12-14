@@ -36,4 +36,4 @@ assets:
 
 # Markdown
 redcarpet:
-  extensions: ["no_intra_emphasis", "autolink", "strikethrough", "superscript", "tables", "highlight"]
+  extensions: ["no_intra_emphasis", "with_toc_data", "autolink", "strikethrough", "tables", "footnotes"]
