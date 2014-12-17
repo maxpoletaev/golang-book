@@ -35,7 +35,7 @@
 }
 
 .download_btn {
-  font-family: "Ubuntu", sans-serif;
+  font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   border: 1px solid #2E6DA4;
   box-sizing: border-box;
   text-decoration: none;
@@ -47,6 +47,7 @@
   color: #FFF;
 
   &:hover {
+    background: #2E6DA4;
     color: #FFF;
   }
 }
