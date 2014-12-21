@@ -50,6 +50,16 @@
     background: #2E6DA4;
     color: #FFF;
   }
+
+  @media screen and (max-width: 640px) {
+    margin-bottom: 10px;
+    text-align: center;
+    display: block;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 }
 
 
