@@ -4,7 +4,16 @@ layout: default
 
 <div class="chapter">
   <h1 class="chaper_heading">{{ page.title }}</h1>
-  <article class="chapter_content">{{ content }}</article>
 
-  {% include prevnext.html %}
+  <article class="chapter_content">
+    {{ content }}
+  </article>
+
+  <div class="chapter_navs">
+    {% include prevnext.html %}
+  </div>
+
+  <div class="chapter_comments">
+    {% include disqus.html %}
+  </div>
 </div>
