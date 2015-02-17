@@ -89,6 +89,12 @@ layout: "chapter"
     var y string = "world"
     fmt.Println(x == y)
 
+Эта программа напечатает `false`, потому что `hello` отличается от `world`. С другой стороны:
+
+    var x string = "hello"
+    var y string = "hello"
+    fmt.Println(x == y)
+
 Напечатает `true`, потому что обе строки одинаковы.
 
 Если мы хотим присвоить значение переменной при её создании, то можем
