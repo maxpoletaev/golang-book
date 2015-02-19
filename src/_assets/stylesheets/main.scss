@@ -37,36 +37,40 @@
   }
 
 .download {
-  margin-bottom: 15px;
+  margin-bottom: 50px;
 }
 
-.download_btn {
-  font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-  border: 1px solid #2E6DA4;
-  box-sizing: border-box;
-  text-decoration: none;
-  display: inline-block;
-  background: #337AB7;
-  border-radius: 2px;
-  margin-right: 10px;
-  padding: 5px 15px;
-  color: #FFF;
-
-  &:hover {
-    background: #2E6DA4;
-    color: #FFF;
+  .download_wrapper {
+    margin-bottom: 10px;
   }
 
-  @media screen and (max-width: 640px) {
-    margin-bottom: 10px;
-    text-align: center;
-    display: block;
+  .download_btn {
+    font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    border: 1px solid #2E6DA4;
+    box-sizing: border-box;
+    text-decoration: none;
+    display: inline-block;
+    background: #337AB7;
+    border-radius: 2px;
+    margin-right: 10px;
+    padding: 5px 15px;
+    color: #FFF;
 
-    &:last-child {
-      margin-bottom: 0;
+    &:hover {
+      background: #2E6DA4;
+      color: #FFF;
+    }
+
+    @media screen and (max-width: 640px) {
+      margin-bottom: 10px;
+      text-align: center;
+      display: block;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
   }
-}
 
 
 .content {
@@ -123,4 +127,9 @@
   ol {
     margin-bottom: 0;
   }
+}
+
+.ads {
+  border: 1px solid #DDD;
+  margin-bottom: 30px;
 }
