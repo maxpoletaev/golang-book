@@ -3,7 +3,7 @@
 
 .container {
   margin: 0 auto;
-  max-width: 800px;
+  max-width: 728px;
   padding-left: 100px;
   padding-right: 100px;
 
@@ -19,11 +19,13 @@
 
   .intro_heading {
     margin-bottom: 0;
+    line-height: 1;
   }
 
   .intro_author {
     font-size: 0.8em;
     font-style: italic;
+    margin-bottom: 10px;
   }
 
 .chapters {
@@ -130,5 +132,7 @@
 }
 
 .ads {
+  box-shadow: 0 1px 1px rgba(0,0,0, 0.2);
   margin-bottom: 30px;
+  text-align: center;
 }
