@@ -8,7 +8,7 @@ body {
 }
 
 pre, code {
-  font-family: "Ubuntu Mono";
+  font-family: "Ubuntu Mono", Consolas, monospace;
 }
 
 h1, h2, h3, h4, h5, h6,
@@ -41,7 +41,7 @@ em > code {
 
 kbd {
   box-shadow: 1px 1px rgba(0,0,0, 0.1);
-  font-family: "Ubuntu Mono";
+  font-family: "Ubuntu Mono", Consolas, monospace;
   box-sizing: border-box;
   border: 1px solid #AAA;
   border-radius: 2px;
