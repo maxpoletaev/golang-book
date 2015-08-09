@@ -38,6 +38,19 @@
     margin-bottom: 15px;
   }
 
+  .chapter_back {
+    font-size: 0.9em;
+    position: relative;
+    padding-left: 1.3em;
+
+    &::before {
+      position: absolute;
+      content: "←";
+      top: -0.2em;
+      left: 0;
+    }
+  }
+
 .download {
   margin-bottom: 50px;
 }
