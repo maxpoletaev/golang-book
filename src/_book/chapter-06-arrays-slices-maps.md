@@ -76,7 +76,7 @@ layout: "chapter"
 
     $ go run tmp.go
     # command-line-arguments
-    .\tmp.go:19: invalid operation: total / 5 (mismatched types float64 and int)
+    .\tmp.go:19: invalid operation: total / len(x) (mismatched types float64 and int)
 
 Проблема в том, что `len(x)` и `total` имеют разный тип. `total` имеет тип
 `float64`, а `len(x)` — `int`. Так что, нам надо конвертировать `len(x)` в
