@@ -1,8 +1,8 @@
 from fabric.contrib.project import rsync_project
-from fabric.api import *
+from fabric.api import local, env, task
 
 env.user = 'poletaev'
-env.hosts = ['zen.su']
+env.hosts = ['zenwalker.ru']
 
 
 @task
