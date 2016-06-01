@@ -7,9 +7,6 @@ baseurl: ""
 # Source
 source:      ./src
 destination: ./build
-plugins:     ./src/_plugins
-layouts:     ./src/_layouts
-data_source: ./src/_data
 
 # Collections
 collections:
@@ -36,4 +33,9 @@ assets:
 
 # Markdown
 redcarpet:
-  extensions: ["no_intra_emphasis", "with_toc_data", "autolink", "strikethrough", "tables", "footnotes"]
+  extensions:
+    - no_intra_emphasis
+    - autolink
+    - strikethrough
+    - tables
+    - footnotes
