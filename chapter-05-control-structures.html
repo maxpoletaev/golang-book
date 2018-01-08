@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta property="og:image" content="/img/cover.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Управление потоком — Введение в программирование на Go</title>
+  <link href="http://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic,700italic&subset=latin,cyrillic" rel="stylesheet">
+
+  <link type="text/css" rel="stylesheet" href="/assets/main.css">
+  
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/darcula.min.css" type="text/css" rel="stylesheet">
+</head>
+
+
+  <body class="page">
+    
+
+    <main class="content">
+      <div class="content_containter container">
+        <div class="chapter">
+  <div class="chapter_header">
+    <a href="/" class="chapter_back">Оглавление</a>
+  </div>
+  <h1 class="chaper_heading">Управление потоком</h1>
+
+  <article class="chapter_content">
+    <p>Теперь, когда мы знаем про переменные, самое время написать что-нибудь полезное.
+Сначала создадим программу, которая по очереди с новой строки выводит числа от
+1 до 10. Наших знаний достаточно для того, чтобы написать эту программу так:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">package main
+
+import "fmt"
+
+func main() {
+    fmt.Println(1)
+    fmt.Println(2)
+    fmt.Println(3)
+    fmt.Println(4)
+    fmt.Println(5)
+    fmt.Println(6)
+    fmt.Println(7)
+    fmt.Println(8)
+    fmt.Println(9)
+    fmt.Println(10)
+}
+</code></pre></div>
+<p>или так:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">package main
+import "fmt"
+
+func main() {
+    fmt.Println(`1
+2
+3
+4
+5
+6
+7
+8
+9
+10`)
+}
+</code></pre></div>
+<p>Но писать это будет довольно утомительно, так что нам нужен лучший способ
+несколько раз повторить определенный набор действий.</p>
+
+<h2>For</h2>
+
+<p>Оператор <code>for</code> даёт возможность повторять список инструкций (блок) определённое
+количество раз. Давайте перепишем предыдущую программу, используя оператор <code>for</code>:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">package main
+
+import "fmt"
+
+func main() {
+    i := 1
+    for i &lt;= 10 {
+        fmt.Println(i)
+        i = i + 1
+    }
+}
+</code></pre></div>
+<p>Сначала создается переменная <code>i</code>, хранящая число, которое нужно вывести на
+экран. Затем с помощью ключевого слова <code>for</code> создается цикл, указывается
+условное выражение, которое может принимать значение <code>true</code> или <code>false</code>, и, наконец, сам блок
+для выполнения. Цикл for работает следующим образом:</p>
+
+<ul>
+<li><p>оценивается (выполняется) условное выражение <code>i &lt;= 10</code> («i меньше или равно
+десяти»). Если оно истинно, выполняются инструкции внутри блока. В противном
+случае управление переходит следующей после блока строке кода (в нашем случае
+после цикла ничего нет, поэтому совершается выход из программы);</p></li>
+<li><p>после запуска всех инструкций внутри блока мы возвращаемся в начало цикла и
+повторяем первый шаг.</p></li>
+</ul>
+
+<p>Строка <code>i = i + 1</code> очень важна - без неё выражение <code>i &lt;= 10</code> всегда будет <code>true</code>,
+и выполнение программы никогда не завершится (это называется бесконечным
+циклом).</p>
+
+<p>Следующий пример показывает выполнение программы точно так же, как это делает
+компьютер:</p>
+
+<ul>
+<li>  создать переменную <code>i</code> со значением 1;</li>
+<li>  <code>i</code> меньше или равно <code>10</code>? да;</li>
+<li>  вывести <code>i</code>;</li>
+<li>  присвоить <code>i</code> значение <code>i + 1</code> (теперь равно 2);</li>
+<li>  <code>i</code> меньше или равно <code>10</code>? да;</li>
+<li>  вывести <code>i</code>;</li>
+<li>  присвоить <code>i</code> значение <code>i + 1</code> (теперь равно 3);</li>
+<li>  … </li>
+<li>  присвоить <code>i</code> значение <code>i + 1</code> (теперь равно 11);</li>
+<li>  <code>i</code> меньше или равно <code>10</code>? нет;</li>
+<li>  больше нечего делать, выходим.</li>
+</ul>
+
+<p>В других языках программирования существуют разные виды циклов (while, do,
+until, foreach, …). У Go вид цикла один, но он может использоваться в разных
+случаях. Предыдущую программу можно также записать следующим образом:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">func main() {
+    for i := 1; i &lt;= 10; i++ {
+        fmt.Println(i)
+    }
+}
+</code></pre></div>
+<p>Теперь условное значение включает в себя также и две другие инструкции,
+разделенные точкой с запятой. Сначала инициализируется переменная, затем
+выполняется условное выражение, и в завершении переменная «инкрементируется»
+(добавление 1 к значению переменной является настолько распространённым
+действием, что для этого существует специальный оператор: <code>++</code>; аналогично
+вычитание 1 может быть выполнено с помощью <code>--</code>).</p>
+
+<p>В следующих главах мы увидим и другие способы использования циклов.</p>
+
+<h2>If</h2>
+
+<p>Давайте изменим программу так, чтобы вместо простого вывода чисел 1–10 она также
+указывала, является ли число чётным или нечётным. Вроде этого:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">1 odd
+2 even
+3 odd
+4 even
+5 odd
+6 even
+7 odd
+8 even
+9 odd
+10 even
+</code></pre></div>
+<p>Для начала нам нужен способ узнать, является ли число чётным или нечётным. Самый
+простой способ — это разделить число на 2. Если остатка от деления не будет,
+значит число чётное, иначе — нечётное. Так как же найти остаток от деления на
+Go? Для этого существует оператор <code>%</code>. Например:</p>
+
+<ul>
+<li><code>1 % 2</code> равно <code>1</code>;</li>
+<li><code>2 % 2</code> равно <code>0</code>;</li>
+<li><code>3 % 2</code> равно <code>1</code> и так далее.</li>
+</ul>
+
+<p>Далее нам нужен способ, чтобы выполнять действия в зависимости от условия. Для этого мы
+используем оператор <code>if</code>:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">if i % 2 == 0 {
+    // even
+} else {
+    // odd
+}
+</code></pre></div>
+<p>Оператор <code>if</code> аналогичен оператору <code>for</code> в том, что он выполняет блок в
+зависимости от условия. Оператор также может иметь необязательную <code>else</code> часть.
+Если условие истинно, выполняется блок, расположенный после условия, иначе же
+этот блок пропускается и выполняется блок <code>else</code>, если он присутствует.</p>
+
+<p>Еще условия могут содержать <code>else if</code> часть:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">if i % 2 == 0 {
+    // divisible by 2
+} else if i % 3 == 0 {
+    // divisible by 3
+} else if i % 5 == 0 {
+    // divisible by 5
+}
+</code></pre></div>
+<p>Условия выполняются сверху вниз, и первое условие, которое окажется истинным,
+приведет в исполнение связанный с ним блок.</p>
+
+<p>Собрав всё вместе, мы получим:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">func main() {
+    for i := 1; i &lt;= 10; i++ {
+       if i % 2 == 0 {
+            fmt.Println(i, "even")
+        } else {
+            fmt.Println(i, "odd")
+        }
+    }
+}
+</code></pre></div>
+<p>Давайте рассмотрим эту программу:</p>
+
+<ul>
+<li>  Создать переменную <code>i</code> типа <code>int</code> и присвоить ей значение <code>1</code>;</li>
+<li>  <code>i</code> меньше или равно <code>10</code>? Да - перейти в блок;</li>
+<li>  остаток от <code>i</code> ÷ <code>2</code> равен <code>0</code>? Нет - переходим к блоку <code>else</code>;</li>
+<li>  вывести <code>i</code> вместе с <code>odd</code>;</li>
+<li>  инкрементировать <code>i</code> (оператор после условия);</li>
+<li>  <code>i</code> меньше или равно <code>10</code>? Да - перейти в блок;</li>
+<li>  остаток от <code>i</code> ÷ <code>2</code> равен <code>0</code>? Да - переходим к блоку <code>if</code>;</li>
+<li>  вывести <code>i</code> вместе с <code>even</code>;</li>
+<li>  …</li>
+</ul>
+
+<p>Оператор деления с остатком (деление по модулю), который редко можно увидеть за
+пределами начальной школы, оказывается действительно полезным при
+программировании. Он будет встречаться везде - от раскрашивания таблиц зеброй до
+секционирования наборов данных.</p>
+
+<h2>Switch</h2>
+
+<p>Предположим, мы захотели написать программу, которая печатала бы английские
+названия для чисел. С использованием того, что мы знали до текущего момента, это могло бы
+выглядеть примерно так:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">if i == 0 { 
+    fmt.Println("Zero") 
+} else if i == 1 {
+    fmt.Println("One")
+} else if i == 2 {
+    fmt.Println("Two")
+} else if i == 3 {
+    fmt.Println("Three")
+} else if i == 4 { 
+    fmt.Println("Four")
+} else if i == 5 {
+    fmt.Println("Five")
+}
+</code></pre></div>
+<p>Но эта запись слишком громоздка. Go содержит в себе другой оператор, позволяющий
+делать такие вещи проще: оператор <code>switch</code> (переключатель). С ним программа
+может выглядеть так:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">switch i {
+case 0: fmt.Println("Zero")
+case 1: fmt.Println("One")
+case 2: fmt.Println("Two")
+case 3: fmt.Println("Three")
+case 4: fmt.Println("Four")
+case 5: fmt.Println("Five")
+default: fmt.Println("Unknown Number")
+}
+</code></pre></div>
+<p>Переключатель начинается с ключевого слова <code>switch</code>, за которым следует выражение
+(в нашем случае <code>i</code>) и серия возможных значений (<code>case</code>). Значение выражения по
+очереди сравнивается с выражениями, следующими после ключевого слова <code>case</code>.
+Если они оказываются равны, то выполняется действие, описанное после <code>:</code>.</p>
+
+<p>Как и условия, обход возможных значений осуществляется сверху вниз, и выбирается
+первое значение, которое сошлось с выражением. Переключатель также поддерживает
+действие по умолчанию, которое будет выполнено в случае, если не подошло ни одно
+из возможных значений (напоминает <code>else</code> в операторе <code>if</code>).</p>
+
+<p>Таковы основные операторы управления потоком. Дополнительные операторы будут
+рассмотрены в следующих главах.</p>
+
+<h2>Задачи</h2>
+
+<ul>
+<li><p>Что делает следующий код?</p>
+<div class="highlight"><pre><code class="language-" data-lang="">i := 10
+
+if i &gt; 10 {
+    fmt.Println("Big")
+} else {
+    fmt.Println("Small")
+}
+</code></pre></div></li>
+<li><p>Напишите программу, которая выводит числа от 1 до 100, которые делятся на 3.
+(3, 6, 9, …).</p></li>
+<li><p>Напишите программу, которая выводит числа от 1 до 100. Но для кратных трём
+нужно вывести «Fizz» вместо числа, для кратных пяти - «Buzz», а для
+кратных как трём, так и пяти — «FizzBuzz».</p></li>
+</ul>
+
+  </article>
+
+  <div class="chapter_navs">
+    
+
+<div class="prevnext">
+  
+    <div class="prevnext_item -prev">&larr; <a href="/chapter-04-variables.html">Переменные</a></div>
+  
+
+  
+    <div class="prevnext_item -next"><a href="/chapter-06-arrays-slices-maps.html">Массивы, срезы, карты</a> &rarr;</div>
+  
+</div>
+
+  </div>
+
+  <div class="ads">
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <ins class="adsbygoogle" style="display:block;width:728px;height:90px" data-ad-client="ca-pub-8928394650916319" data-ad-slot="6541630584"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+
+  <div class="chapter_comments">
+    <div id="disqus_thread"></div>
+<script>
+  (function() {
+    var dsq = document.createElement('script'); dsq.async = true; dsq.src = '//golangbookru.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+  </div>
+</div>
+
+      </div>
+    </main>
+
+    <div class="footer">
+  <div class="footer_container container">
+    <p>Сайт является переводом книги <a href="http://www.doxsey.net" target="_blank">Caleb Doxsey</a> — <a href="http://www.golang-book.com" target="_blank">An introduction to programming in Go</a>, распространяемой на условиях <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons 3.0 Attribution License</a>. Переводчики: <a href="http://zenwalker.ru" target="_blank">Максим Полетаев</a>, <a href="http://rozaev.ru" target="_blank">Виктор Розаев</a> и <a href="https://github.com/zenwalker/golang-book/graphs/contributors">другие</a>.</p>
+  </div>
+</div>
+
+
+    <a class="github-ribbon" href="https://github.com/zenwalker/golang-book"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+
+    <!-- Yandex.Metrika counter --><script type="text/javascript">(function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter27467922 = new Ya.Metrika({id:27467922}); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="//mc.yandex.ru/watch/27467922" style="position:absolute; left:-9999px;" alt="" /></div></noscript><!-- /Yandex.Metrika counter -->
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-57641314-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/shell.min.js"></script>
+  <script type="text/javascript">
+    function hlt() {
+      var nodes = document.querySelectorAll('pre code');
+      nodes.forEach(function(el){
+        var src = el.innerText;
+        var res = hljs.highlightAuto(src, ['golang', 'shell']);
+        el.innerHTML = res.value;
+      });
+    }
+    
+    window.onload=function(){
+      hlt();
+    }
+  </script>
+
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta property="og:image" content="/img/cover.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Тестирование — Введение в программирование на Go</title>
+  <link href="http://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic,700italic&subset=latin,cyrillic" rel="stylesheet">
+
+  <link type="text/css" rel="stylesheet" href="/assets/main.css">
+  
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/darcula.min.css" type="text/css" rel="stylesheet">
+</head>
+
+
+  <body class="page">
+    
+
+    <main class="content">
+      <div class="content_containter container">
+        <div class="chapter">
+  <div class="chapter_header">
+    <a href="/" class="chapter_back">Оглавление</a>
+  </div>
+  <h1 class="chaper_heading">Тестирование</h1>
+
+  <article class="chapter_content">
+    <p>Писать программы — не просто. Даже самые лучшие программисты, зачастую, не в
+состоянии написать программу так, чтобы она работала как положено в любых
+случаях. Поэтому, важной частью процесса разработки является тестирование.
+Написание тестов для нашего кода является отличным способом повышения его
+качества и стабильности.</p>
+
+<p>Go содержит специальную программу, призванную облегчить написание тестов, так
+что давайте напишем несколько тестов для пакета, который мы создали в предыдущей
+главе. В папке <code>chapter11/math</code> создайте файл под именем <code>math_test.go</code>, который
+будет содержать следующее:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">package math
+
+import "testing"
+
+func TestAverage(t *testing.T) {
+    var v float64
+    v = Average([]float64{1,2})
+    if v != 1.5 {
+        t.Error("Expected 1.5, got ", v)
+    }
+}
+</code></pre></div>
+<p>Теперь запустим эту команду:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">go test
+</code></pre></div>
+<p>Вы должны увидеть:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">$ go test
+PASS
+ok      golang-book/chapter11/math      0.032s
+</code></pre></div>
+<p>Команда <code>go test</code> найдет все тесты для всех файлов в текущей директории и
+запустит их. Тесты определяются с помощью добавления <code>Test</code> к имени функции и
+принимают один аргумент типа <code>*testing.T</code>. В нашем случае, поскольку мы
+тестируем функцию <code>Average</code>, тестирующая функция будет называться <code>TestAverage</code>.</p>
+
+<p>После определения тестирующей функции пишется код, который должен использовать
+тестируемую функцию. Мы знаем, что среднее от <code>[1, 2]</code> будет <code>1.5</code>, это и есть
+то, что мы проверяем. Возможно, лучшей идеей будет проверить различные
+комбинации чисел, так что давайте немного изменим тестирующую функцию:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">package math
+
+import "testing"
+
+type testpair struct {
+    values []float64
+    average float64
+}
+
+var tests = []testpair{
+    { []float64{1,2}, 1.5 },
+    { []float64{1,1,1,1,1,1}, 1 },
+    { []float64{-1,1}, 0 },
+}
+
+func TestAverage(t *testing.T) {
+    for _, pair := range tests {
+        v := Average(pair.values)
+        if v != pair.average {
+            t.Error(
+                "For", pair.values, 
+                "expected", pair.average,
+                "got", v,
+            )
+        }
+    }
+}
+</code></pre></div>
+<p>Это очень распространённый способ написания тестов (больше примеров можно найти
+в исходном коде пакетов, поставляемых с Go). Мы создали <code>struct</code>, представляющий
+входы и выходы для функций. Затем мы создали список из этих структур (пар) и
+вызвали тестируемую функцию в каждой итерации цикла.</p>
+
+<h2>Задачи</h2>
+
+<ul>
+<li><p>Написать хороший набор тестов не всегда легко, но даже сам процесс их
+написания, зачастую, может выявить много проблем для первой реализации функции.
+Например, что произойдет с нашей функцией <code>Average</code>, если ей передать пустой
+список (<code>[]float64{}</code>)? Как нужно изменить функцию, чтобы она возвращала <code>0</code> в
+таких случаях?</p></li>
+<li><p>Напишите серию тестов для функций <code>Min</code> и <code>Max</code> из предыдущей главы.</p></li>
+</ul>
+
+  </article>
+
+  <div class="chapter_navs">
+    
+
+<div class="prevnext">
+  
+    <div class="prevnext_item -prev">&larr; <a href="/chapter-11-packages.html">Пакеты и повторное использование кода</a></div>
+  
+
+  
+    <div class="prevnext_item -next"><a href="/chapter-13-core-packages.html">Стандартная библиотека</a> &rarr;</div>
+  
+</div>
+
+  </div>
+
+  <div class="ads">
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <ins class="adsbygoogle" style="display:block;width:728px;height:90px" data-ad-client="ca-pub-8928394650916319" data-ad-slot="6541630584"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+
+  <div class="chapter_comments">
+    <div id="disqus_thread"></div>
+<script>
+  (function() {
+    var dsq = document.createElement('script'); dsq.async = true; dsq.src = '//golangbookru.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+  </div>
+</div>
+
+      </div>
+    </main>
+
+    <div class="footer">
+  <div class="footer_container container">
+    <p>Сайт является переводом книги <a href="http://www.doxsey.net" target="_blank">Caleb Doxsey</a> — <a href="http://www.golang-book.com" target="_blank">An introduction to programming in Go</a>, распространяемой на условиях <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons 3.0 Attribution License</a>. Переводчики: <a href="http://zenwalker.ru" target="_blank">Максим Полетаев</a>, <a href="http://rozaev.ru" target="_blank">Виктор Розаев</a> и <a href="https://github.com/zenwalker/golang-book/graphs/contributors">другие</a>.</p>
+  </div>
+</div>
+
+
+    <a class="github-ribbon" href="https://github.com/zenwalker/golang-book"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+
+    <!-- Yandex.Metrika counter --><script type="text/javascript">(function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter27467922 = new Ya.Metrika({id:27467922}); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="//mc.yandex.ru/watch/27467922" style="position:absolute; left:-9999px;" alt="" /></div></noscript><!-- /Yandex.Metrika counter -->
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-57641314-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/shell.min.js"></script>
+  <script type="text/javascript">
+    function hlt() {
+      var nodes = document.querySelectorAll('pre code');
+      nodes.forEach(function(el){
+        var src = el.innerText;
+        var res = hljs.highlightAuto(src, ['golang', 'shell']);
+        el.innerHTML = res.value;
+      });
+    }
+    
+    window.onload=function(){
+      hlt();
+    }
+  </script>
+
+</html>

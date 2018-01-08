@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta property="og:image" content="/img/cover.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Функции — Введение в программирование на Go</title>
+  <link href="http://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic,700italic&subset=latin,cyrillic" rel="stylesheet">
+
+  <link type="text/css" rel="stylesheet" href="/assets/main.css">
+  
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/darcula.min.css" type="text/css" rel="stylesheet">
+</head>
+
+
+  <body class="page">
+    
+
+    <main class="content">
+      <div class="content_containter container">
+        <div class="chapter">
+  <div class="chapter_header">
+    <a href="/" class="chapter_back">Оглавление</a>
+  </div>
+  <h1 class="chaper_heading">Функции</h1>
+
+  <article class="chapter_content">
+    <p>Функция является независимой частью кода, связывающей один или несколько входных
+параметров с одним или несколькими выходными параметрами. Функции (также
+известные как процедуры и подпрограммы) можно представить как черный ящик:</p>
+
+<p><img src="/img/chapter-07/01.png" alt=""></p>
+
+<p>До сих пор мы писали программы, используя лишь одну функцию:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">func main() {}
+</code></pre></div>
+<p>Но сейчас мы начнем создавать код, содержащий более одной функции.</p>
+
+<h2>Ваша вторая функция</h2>
+
+<p>Вспомните эту программу из предыдущей главы:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">func main() {
+    xs := []float64{98,93,77,82,83}
+
+    total := 0.0
+    for _, v := range xs {
+        total += v
+    }
+    fmt.Println(total / float64(len(xs)))
+}
+</code></pre></div>
+<p>Эта программа вычисляет среднее значение ряда чисел. Поиск среднего значения
+— основная задача и идеальный кандидат для вынесения в отдельную функцию.</p>
+
+<p>Функция <code>average</code> должна взять срез из нескольких <code>float64</code> и вернуть один
+<code>float64</code>. Напишем перед функцией <code>main</code>:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">func average(xs []float64) float64 {
+    panic("Not Implemented")
+}
+</code></pre></div>
+<p>Функция начинается с ключевого слова <code>func</code>, за которым следует имя функции.
+Аргументы (входы) определяются так: <code>имя тип, имя тип, …</code>. Наша функция имеет
+один параметр (список оценок) под названием <code>xs</code>. За параметром следует
+возвращаемый тип. В совокупности аргументы и возвращаемое значение также
+известны как сигнатура функции.</p>
+
+<p>Наконец, далее идет тело функции, заключенное в фигурные скобки. В теле вызывается
+встроенная функция <code>panic</code>, которая вызывает ошибку выполнения (о ней я расскажу
+чуть позже в этой главе). Процесс написания функций может быть сложен, поэтому
+деление этого процесса на несколько частей вместо попытки реализовать всё за
+один большой шаг — хорошая идея.</p>
+
+<p>Теперь давайте перенесём часть кода из функции <code>main</code> в функцию <code>average</code>:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">func average(xs []float64) float64 {    
+    total := 0.0
+    for _, v := range xs {
+        total += v
+    }
+    return total / float64(len(xs))
+}
+</code></pre></div>
+<p>Обратите внимание, что мы заменили вызов <code>fmt.Println</code> на оператор <code>return</code>.
+Оператор возврата немедленно прервет выполнение функции и вернет значение,
+указанное после оператора, в функцию, которая вызвала текущую. Приведем <code>main</code> к
+следующему виду:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">func main() {
+    xs := []float64{98,93,77,82,83}
+    fmt.Println(average(xs))
+}
+</code></pre></div>
+<p>Запуск этой программы должен дать точно такой же результат, что и раньше.
+Несколько моментов, которые нужно иметь ввиду:</p>
+
+<ul>
+<li><p>имена аргументов не обязательно должны совпадать с именами переменных при
+вызове функции. Например, можно сделать так:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">func main() {
+    someOtherName := []float64{98,93,77,82,83}
+    fmt.Println(average(someOtherName))
+}
+</code></pre></div>
+<p>и программа продолжит работать;</p></li>
+<li><p>функции не имеют доступа к области видимости родительской функции, то есть это не сработает:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">func f() {
+    fmt.Println(x)
+}
+func main() {
+    x := 5
+    f()
+}
+</code></pre></div>
+<p>Как минимум нужно сделать так:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">func f(x int) {
+    fmt.Println(x)
+}
+func main() {
+    x := 5
+    f(x)
+}
+</code></pre></div>
+<p>или так:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">var x int = 5
+func f() {
+    fmt.Println(x)
+}
+func main() {
+    f()
+}
+</code></pre></div></li>
+<li><p>функции выстраиваются в «стек вызовов». Предположим, у нас есть такая
+программа:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">func main() {
+    fmt.Println(f1())
+}
+func f1() int {
+    return f2()
+}
+func f2() int {
+    return 1
+}
+</code></pre></div>
+<p>Её можно представить следующим образом:</p>
+
+<p><img src="/img/chapter-07/02.png" alt=""></p>
+
+<p>Каждая вызываемая функция помещается в стек вызовов, каждый возврат из функции возвращает нас 
+к предыдущей приостановленной подпрограмме;</p></li>
+<li><p>можно также явно указать имя возвращаемого значения:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">func f2() (r int) {
+    r = 1
+    return
+}
+</code></pre></div></li>
+</ul>
+
+<h2>Возврат нескольких значений</h2>
+
+<p>Go способен возвращать несколько значений из функции:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">func f() (int, int) {
+    return 5, 6
+}
+
+func main() {
+    x, y := f()
+}
+</code></pre></div>
+<p>Для этого необходимы три вещи: указать несколько типов возвращаемых значений,
+разделенных <code>,</code>, изменить выражение после <code>return</code> так, чтобы оно содержало
+несколько значений, разделенных <code>,</code>, и, наконец, изменить конструкцию присвоения
+так, чтобы она содержала несколько значений в левой части перед <code>:=</code> или <code>=</code>.</p>
+
+<p>Возврат нескольких значений часто используется для возврата ошибки вместе с
+результатом (<code>x, err := f()</code>) или логического значения, говорящего об успешном
+выполнении (<code>x, ok := f()</code>).</p>
+
+<h2>Переменное число аргументов функции</h2>
+
+<p>Существует особая форма записи последнего аргумента в функции Go:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">func add(args ...int) int {
+    total := 0
+    for _, v := range args {
+        total += v
+    }
+    return total
+}
+func main() {
+    fmt.Println(add(1,2,3))
+}
+</code></pre></div>
+<p>Использование <code>...</code> перед типом последнего аргумента означает, что функция может
+содержать ноль и более таких параметров. В нашем случае мы берем ноль и более
+<code>int</code>. Функцию можно вызывать, как и раньше, но при этом ей можно передать любое
+количество аргументов типа <code>int</code>.</p>
+
+<p>Это похоже на реализацию функции <code>Println</code>:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">func Println(a ...interface{}) (n int, err error)
+</code></pre></div>
+<p>Функция <code>Println</code> может принимать любое количество аргументов любого типа (тип
+<code>interface</code> мы рассмотрим в главе 9).</p>
+
+<p>Мы также можем передать срез <code>int</code>-ов, указав <code>...</code> после среза:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">func main() {
+    xs := []int{1,2,3}
+    fmt.Println(add(xs...))
+}
+</code></pre></div>
+<h2>Замыкания</h2>
+
+<p>Возможно создавать функции внутри функций:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">func main() {
+    add := func(x, y int) int {
+        return x + y
+    }
+    fmt.Println(add(1,1))    
+}
+</code></pre></div>
+<p><code>add</code> является локальной переменной типа <code>func(int, int) int</code> (функция принимает
+два аргумента типа <code>int</code> и возвращает <code>int</code>). При создании локальная функция
+также получает доступ к локальным переменным (вспомните области видимости из
+главы 4):</p>
+<div class="highlight"><pre><code class="language-" data-lang="">func main() {
+    x := 0
+    increment := func() int {
+        x++
+        return x
+    }
+    fmt.Println(increment())
+    fmt.Println(increment())    
+}
+</code></pre></div>
+<p><code>increment</code> прибавляет <code>1</code> к переменной <code>x</code>, которая определена в рамках функции
+<code>main</code>. Значение переменной <code>x</code> может быть изменено в функции <code>increment</code>. Вот
+почему при первом вызове <code>increment</code> на экран выводится <code>1</code>, а при втором — <code>2</code>.</p>
+
+<p>Функцию, использующую переменные, определенные вне этой функции, называют
+замыканием. В нашем случае функция <code>increment</code> и переменная <code>x</code> образуют
+замыкание.</p>
+
+<p>Один из способов использования замыкания — функция, возвращающая другую функцию,
+которая при вызове генерирует некую последовательность чисел. Например,
+следующим образом мы могли бы сгенерировать все четные числа:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">func makeEvenGenerator() func() uint {
+    i := uint(0)
+    return func() (ret uint) {
+        ret = i
+        i += 2
+        return
+    }
+}
+func main() {
+    nextEven := makeEvenGenerator()
+    fmt.Println(nextEven()) // 0
+    fmt.Println(nextEven()) // 2
+    fmt.Println(nextEven()) // 4
+}
+</code></pre></div>
+<p><code>makeEvenGenerator</code> возвращает функцию, которая генерирует чётные числа. Каждый
+раз, когда она вызывается, к переменной <code>i</code> добавляется <code>2</code>, но в отличие от
+обычных локальных переменных её значение сохраняется между вызовами.</p>
+
+<h2>Рекурсия</h2>
+
+<p>Наконец, функция может вызывать саму себя. Вот один из способов вычисления
+факториала числа:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">func factorial(x uint) uint {
+    if x == 0 {
+        return 1
+    }
+
+    return x * factorial(x-1)
+}
+</code></pre></div>
+<p><code>factorial</code> вызывает саму себя, что делает эту функцию рекурсивной. Для того,
+чтобы лучше понять, как работает эта функция, давайте пройдемся по
+<code>factorial(2)</code>:</p>
+
+<ul>
+<li>  <code>x == 0</code>? Нет. (<code>x</code> равен <code>2</code>);</li>
+<li>  ищем факториал от <code>x - 1</code>;
+
+<ul>
+<li>  <code>x == 0</code>? Нет. (<code>x</code> равен <code>1</code>);</li>
+</ul></li>
+<li>  ищем факториал от <code>0</code>;
+
+<ul>
+<li>  <code>x == 0</code>? Да, возвращаем <code>1</code>;</li>
+</ul></li>
+<li>  возвращаем <code>1 * 1</code>;</li>
+<li>  возвращаем <code>2 * 1</code>.</li>
+</ul>
+
+<p>Замыкание и рекурсивный вызов — сильные техники программирования, формирующие
+основу парадигмы, известной как функциональное программирование. Большинство
+людей находят функциональное программирование более сложным для понимания, чем
+подход на основе циклов, логических операторов, переменных и простых функций.</p>
+
+<h2>Отложенный вызов, паника и восстановление</h2>
+
+<p>В Go есть специальный оператор <code>defer</code>, который позволяет отложить вызов
+указанной функции до тех пор, пока не завершится текущая. Рассмотрим следующий
+пример:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">package main
+
+import "fmt"
+
+func first() {
+    fmt.Println("1st")
+}
+func second() {
+    fmt.Println("2nd")
+}
+func main() {
+    defer second()
+    first()
+}
+</code></pre></div>
+<p>Эта программа выводит <code>1st</code>, затем <code>2nd</code>. Грубо говоря <code>defer</code> перемещает вызов
+<code>second</code> в конец функции:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">func main() {
+    first()
+    second()
+}
+</code></pre></div>
+<p><code>defer</code> часто используется в случаях, когда нужно освободить ресурсы после
+завершения. Например, открывая файл необходимо убедиться, что позже он должен
+быть закрыт. C <code>defer</code> это выглядит так:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">f, _ := os.Open(filename)
+defer f.Close()
+</code></pre></div>
+<p>Такой подход дает нам три преимущества: (1) вызовы <code>Close</code> и <code>Open</code>
+располагаются рядом, что облегчает понимание программы, (2) если функция
+содержит несколько операций возврата (например, одна произойдет в блоке <code>if</code>,
+другая в блоке <code>else</code>), <code>Close</code> будет вызван до выхода из функции, (3)
+отложенные функции вызываются, даже если во время выполнения происходит ошибка.</p>
+
+<h3>Паника и восстановление</h3>
+
+<p>Ранее мы создали функцию, которая вызывает <code>panic</code>, чтобы сгенерировать ошибку
+выполнения. Мы можем обрабатывать паники с помощью встроенной функции <code>recover</code>.
+Функция <code>recover</code> останавливает панику и возвращает значение, которое было
+передано функции <code>panic</code>. Можно попытаться использовать <code>recover</code> следующим
+образом:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">package main
+
+import "fmt"
+
+func main() {
+    panic("PANIC")
+    str := recover()
+    fmt.Println(str)
+}
+</code></pre></div>
+<p>Но в данном случае <code>recover</code> никогда не будет вызвана, поскольку вызов <code>panic</code>
+немедленно останавливает выполнение функции. Вместо этого мы должны использовать
+его вместе с <code>defer</code>:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">package main
+
+import "fmt"
+
+func main() {
+    defer func() {    
+        str := recover()
+        fmt.Println(str)
+    }()
+    panic("PANIC")
+}
+</code></pre></div>
+<p>Паника обычно указывает на ошибку программиста (например, попытку получить
+доступ к несуществующему индексу массива, забытая и непроинициализированная карта и т.д.)
+или неожиданное поведение (исключение), которое нельзя обработать (поэтому оно и
+называется «паника»).</p>
+
+<h2>Задачи</h2>
+
+<ul>
+<li><p>Функция <code>sum</code> принимает срез чисел и складывает их вместе. Как бы выглядела
+сигнатура этой функции?</p></li>
+<li><p>Напишите функцию, которая принимает число, делит его пополам и возвращает
+<code>true</code> в случае, если получившееся число чётное, и <code>false</code> в случае нечетного
+результата. Например, <code>half(1)</code> должна вернуть <code>(0, false)</code>, в то время как
+<code>half(2)</code> вернет <code>(1, true)</code>.</p></li>
+<li><p>Напишите функцию с переменным числом параметров, которая находит наибольшее
+число в списке.</p></li>
+<li><p>Используя в качестве примера функцию <code>makeEvenGenerator</code> напишите
+<code>makeOddGenerator</code>, генерирующую нечётные числа.</p></li>
+<li><p>Последовательность чисел Фибоначчи определяется как <code>fib(0) = 0</code>, 
+<code>fib(1) = 1</code>, <code>fib(n) = fib(n-1) + fib(n-2)</code>. Напишите рекурсивную функцию,
+находящую <code>fib(n)</code>.</p></li>
+<li><p>Что такое отложенный вызов, паника и восстановление? Как восстановить функцию
+после паники?</p></li>
+</ul>
+
+  </article>
+
+  <div class="chapter_navs">
+    
+
+<div class="prevnext">
+  
+    <div class="prevnext_item -prev">&larr; <a href="/chapter-06-arrays-slices-maps.html">Массивы, срезы, карты</a></div>
+  
+
+  
+    <div class="prevnext_item -next"><a href="/chapter-08-pointers.html">Указатели</a> &rarr;</div>
+  
+</div>
+
+  </div>
+
+  <div class="ads">
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <ins class="adsbygoogle" style="display:block;width:728px;height:90px" data-ad-client="ca-pub-8928394650916319" data-ad-slot="6541630584"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+
+  <div class="chapter_comments">
+    <div id="disqus_thread"></div>
+<script>
+  (function() {
+    var dsq = document.createElement('script'); dsq.async = true; dsq.src = '//golangbookru.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+  </div>
+</div>
+
+      </div>
+    </main>
+
+    <div class="footer">
+  <div class="footer_container container">
+    <p>Сайт является переводом книги <a href="http://www.doxsey.net" target="_blank">Caleb Doxsey</a> — <a href="http://www.golang-book.com" target="_blank">An introduction to programming in Go</a>, распространяемой на условиях <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons 3.0 Attribution License</a>. Переводчики: <a href="http://zenwalker.ru" target="_blank">Максим Полетаев</a>, <a href="http://rozaev.ru" target="_blank">Виктор Розаев</a> и <a href="https://github.com/zenwalker/golang-book/graphs/contributors">другие</a>.</p>
+  </div>
+</div>
+
+
+    <a class="github-ribbon" href="https://github.com/zenwalker/golang-book"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+
+    <!-- Yandex.Metrika counter --><script type="text/javascript">(function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter27467922 = new Ya.Metrika({id:27467922}); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="//mc.yandex.ru/watch/27467922" style="position:absolute; left:-9999px;" alt="" /></div></noscript><!-- /Yandex.Metrika counter -->
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-57641314-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/shell.min.js"></script>
+  <script type="text/javascript">
+    function hlt() {
+      var nodes = document.querySelectorAll('pre code');
+      nodes.forEach(function(el){
+        var src = el.innerText;
+        var res = hljs.highlightAuto(src, ['golang', 'shell']);
+        el.innerHTML = res.value;
+      });
+    }
+    
+    window.onload=function(){
+      hlt();
+    }
+  </script>
+
+</html>
