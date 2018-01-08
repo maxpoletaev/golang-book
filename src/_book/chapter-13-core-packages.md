@@ -106,17 +106,17 @@ Go содержит большое количество функций для р
     func main() {
         file, err := os.Open("test.txt")
         if err != nil {
-            // handle the error here
+            // здесь перехватывается ошибка
             return
         }
         defer file.Close()
         
-        // get the file size
+        // получить размер файла
         stat, err := file.Stat()
         if err != nil {
             return
         }
-        // read the file
+        // чтение файла
         bs := make([]byte, stat.Size())
         _, err = file.Read(bs)
         if err != nil {
@@ -158,7 +158,7 @@ Go содержит большое количество функций для р
     func main() {
         file, err := os.Create("test.txt")
         if err != nil {
-            // handle the error here
+            // здесь перехватывается ошибка
             return
         }
         defer file.Close()
@@ -404,26 +404,26 @@ Go имеет встроенный тип для сообщений об оши�
     )
 
     func server() {
-        // listen on a port
+        // слушать порт
         ln, err := net.Listen("tcp", ":9999")
         if err != nil {
             fmt.Println(err)
             return
         }
         for {
-            // accept a connection
+            // принятие соединения
             c, err := ln.Accept()
             if err != nil {
                 fmt.Println(err)
                 continue
             }
-            // handle the connection
+            // обработка соединения
             go handleServerConnection(c)
         }
     }
 
     func handleServerConnection(c net.Conn) {
-        // receive the message
+        // получение сообщения
         var msg string
         err := gob.NewDecoder(c).Decode(&msg)
         if err != nil {
@@ -436,14 +436,14 @@ Go имеет встроенный тип для сообщений об оши�
     }
 
     func client() {
-        // connect to the server
+        // соединиться с сервером
         c, err := net.Dial("tcp", "127.0.0.1:9999")
         if err != nil {
             fmt.Println(err)
             return
         }
 
-        // send the message
+        // послать сообщение
         msg := "Hello World"
         fmt.Println("Sending", msg)
         err = gob.NewEncoder(c).Encode(msg)
@@ -594,11 +594,11 @@ HTTP-серверы еще проще в настройке и использо�
     import ("fmt";"flag";"math/rand")
 
     func main() {
-        // Define flags
+        // Определение флагов
         maxp := flag.Int("max", 6, "the max value")
-        // Parse
+        // Парсинг
         flag.Parse()
-        // Generate a number between 0 and max
+        // Генерация числа от 0 до max
         fmt.Println(rand.Intn(*maxp))
     }
 
