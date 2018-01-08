@@ -10,7 +10,7 @@ layout: "chapter"
 ## Массивы
 
 Массив — это нумерованная последовательность элементов одного типа с
-фиксированной длинной. В Go они выглядят так:
+фиксированной длиной. В Go они выглядят так:
 
     var x [5]int
 
@@ -46,7 +46,7 @@ layout: "chapter"
         x[2] = 77
         x[3] = 82
         x[4] = 83
-    
+
         var total float64 = 0
         for i := 0; i < 5; i++ {
             total += x[i]
@@ -128,22 +128,22 @@ layout: "chapter"
 Иногда массивы могут оказаться слишком длинными для записи в одну строку, в этом
 случае Go позволяет записывать их в несколько строк:
 
-    x := [5]float64{ 
-        98, 
-        93, 
-        77, 
-        82, 
+    x := [5]float64{
+        98,
+        93,
+        77,
+        82,
         83,
     }
 
 Обратите внимание на последнюю `,` после `83`. Она обязательна и позволяет легко
 удалить элемент из массива просто закомментировав строку:
 
-    x := [4]float64{ 
-        98, 
-        93, 
-        77, 
-        82, 
+    x := [4]float64{
+        98,
+        93,
+        77,
+        82,
         // 83,
     }
 
@@ -293,7 +293,7 @@ layout: "chapter"
         elements["O"] = "Oxygen"
         elements["F"] = "Fluorine"
         elements["Ne"] = "Neon"
-    
+
         fmt.Println(elements["Li"])
     }
 
@@ -345,19 +345,19 @@ Go есть лучший способ сделать это:
     func main() {
         elements := map[string]map[string]string{
                 "H": map[string]string{
-                "name":"Hydrogen", 
+                "name":"Hydrogen",
                 "state":"gas",
             },
             "He": map[string]string{
-                "name":"Helium", 
+                "name":"Helium",
                 "state":"gas",
             },
             "Li": map[string]string{
-                "name":"Lithium", 
+                "name":"Lithium",
                 "state":"solid",
             },
             "Be": map[string]string{
-                "name":"Beryllium", 
+                "name":"Beryllium",
                 "state":"solid",
             },
             "B":  map[string]string{
@@ -404,11 +404,11 @@ Go есть лучший способ сделать это:
 *   Чему равна длина среза, созданного таким способом: `make([]int, 3, 9)`?
 
 *   Дан массив:
-    
+
     ```
     x := [6]string{"a","b","c","d","e","f"}
     ```
-    
+
     что вернет вам `x[2:5]`?
 
 *   Напишите программу, которая находит самый наименьший элемент в этом списке:
