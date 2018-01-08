@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta property="og:image" content="/img/cover.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Многопоточность — Введение в программирование на Go</title>
+  <link href="http://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic,700italic&subset=latin,cyrillic" rel="stylesheet">
+
+  <link type="text/css" rel="stylesheet" href="/assets/main.css">
+  
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/darcula.min.css" type="text/css" rel="stylesheet">
+</head>
+
+
+  <body class="page">
+    
+
+    <main class="content">
+      <div class="content_containter container">
+        <div class="chapter">
+  <div class="chapter_header">
+    <a href="/" class="chapter_back">Оглавление</a>
+  </div>
+  <h1 class="chaper_heading">Многопоточность</h1>
+
+  <article class="chapter_content">
+    <p>Очень часто, большие приложения состоят из множества небольших подпрограмм.
+Например, web-сервер принимает запросы от браузера и отправляет HTML страницы в
+ответ. Каждый такой запрос выполняется как отдельная небольшая программа.</p>
+
+<p>Такой способ идеально подходит для подобных приложений, так как обеспечивает
+возможность одновременного запуска множества более мелких компонентов (обработки
+нескольких запросов одновременно, в случае веб-сервера). Одновременное
+выполнение более чем одной задачи известно как многопоточность. Go имеет богатую
+функциональность для работы с многопоточностью, в частности, такие инструменты как
+горутины и каналы.</p>
+
+<h2>Горутины</h2>
+
+<p>Горутина — это функция, которая может работать параллельно с другими функциями.
+Для создания горутины используется ключевое слово <code>go</code>, за которым следует
+вызов функции.</p>
+<div class="highlight"><pre><code class="language-" data-lang="">package main
+
+import "fmt"
+
+func f(n int) {
+    for i := 0; i &lt; 10; i++ {
+        fmt.Println(n, ":", i)
+    }
+}
+
+func main() {
+    go f(0)
+    var input string
+    fmt.Scanln(&amp;input)
+}
+</code></pre></div>
+<p>Эта программа состоит из двух горутин. Функция <code>main</code>, сама по себе, является
+горутиной. Вторая горутина создаётся, когда мы вызываем <code>go f(0)</code>. Обычно, при
+вызове функции, программа выполнит все конструкции внутри вызываемой функции, а
+только потом перейдет к следующей после вызова, строке. С горутиной программа
+немедленно прейдет к следующей строке, не дожидаясь, пока вызываемая функция
+завершится. Вот почему здесь присутствует вызов <code>Scanln</code>, без него программа
+завершится еще перед тем, как ей удастся вывести числа.</p>
+
+<p>Горутины очень легкие, мы можем создавать их тысячами. Давайте изменим
+программу так, чтобы она запускала 10 горутин:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">func main() {
+    for i := 0; i &lt; 10; i++ {
+        go f(i)
+    }
+    var input string
+    fmt.Scanln(&amp;input)
+}
+</code></pre></div>
+<p>При запуске вы наверное заметили, что все горутины выполняются
+последовательно, а не одновременно, как вы того ожидали. Давайте добавим
+небольшую задержку функции с помощью функции <code>time.Sleep</code> и <code>rand.Inin</code>:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">package main
+
+import (
+    "fmt"
+    "time"
+    "math/rand"
+)
+
+func f(n int) {
+    for i := 0; i &lt; 10; i++ {
+        fmt.Println(n, ":", i)
+        amt := time.Duration(rand.Intn(250))
+        time.Sleep(time.Millisecond * amt)
+    }
+}
+func main() {
+    for i := 0; i &lt; 10; i++ {
+        go f(i)
+    }
+    var input string
+    fmt.Scanln(&amp;input)
+}
+</code></pre></div>
+<p><code>f</code> выводит числа от 0 до 10, ожидая от 0 до 250 мс после каждой операции
+вывода. Теперь горутины должны выполняться одновременно.</p>
+
+<h2>Каналы</h2>
+
+<p>Каналы обеспечивают возможность общения нескольких горутин друг с другом,
+чтобы синхронизировать их выполнение. Вот пример программы с использованием
+каналов:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">package main
+
+import (
+    "fmt"
+    "time"
+)
+
+func pinger(c chan string) {
+    for i := 0; ; i++ {
+        c &lt;- "ping"
+    }
+}
+func printer(c chan string) {
+    for {
+        msg := &lt;- c
+        fmt.Println(msg)
+        time.Sleep(time.Second * 1)
+    }
+}
+func main() {
+    var c chan string = make(chan string)
+
+    go pinger(c)
+    go printer(c)
+
+    var input string
+    fmt.Scanln(&amp;input)
+}
+</code></pre></div>
+<p>Программа будет постоянно выводить «ping» (нажмите enter, чтобы её остановить).
+Тип канала представлен ключевым словом <code>chan</code>, за которым следует тип, который
+будет передаваться по каналу (в данном случае мы передаем строки). Оператор <code>&lt;-</code>
+(стрелка влево) используется для отправки и получения сообщений по каналу.
+Конструкция <code>c &lt;- &quot;ping&quot;</code> означает отправку <code>&quot;ping&quot;</code>, а <code>msg := &lt;- c</code> — его
+получение и сохранение в переменную <code>msg</code>. Строка с <code>fmt</code> может быть записана
+другим способом: <code>fmt.Println(&lt;-c)</code>, тогда можно было бы удалить предыдущую
+строку.</p>
+
+<p>Данное использование каналов позволяет синхронизировать две горутины. Когда
+<code>pinger</code> пытается послать сообщение в канал, он ожидает, пока <code>printer</code> будет
+готов получить сообщение. Такое поведение называется блокирующим. Давайте
+добавим ещё одного отправителя сообщений в программу и посмотрим, что будет.
+Добавим эту функцию:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">func ponger(c chan string) {
+    for i := 0; ; i++ {
+        c &lt;- "pong"
+    }
+}
+</code></pre></div>
+<p>и изменим функцию <code>main</code>:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">func main() {
+    var c chan string = make(chan string)
+
+    go pinger(c)
+    go ponger(c)
+    go printer(c)
+
+    var input string
+    fmt.Scanln(&amp;input)
+}
+</code></pre></div>
+<p>Теперь программа будет выводить на экран то <code>ping</code>, то <code>pong</code> по очереди.</p>
+
+<h2>Направление каналов</h2>
+
+<p>Мы можем задать направление передачи сообщений в канале, сделав его только
+отправляющим или принимающим. Например, мы можем изменить функцию <code>pinger</code>:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">func pinger(c chan&lt;- string)
+</code></pre></div>
+<p>и канал <code>c</code> будет только отправлять сообщение. Попытка получить сообщение из
+канала <code>c</code> вызовет ошибку компилирования. Также мы можем изменить функцию
+<code>printer</code>:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">func printer(c &lt;-chan string)
+</code></pre></div>
+<p>Существуют и двунаправленные каналы, которые могут быть переданы в функцию,
+принимающую только принимающие или отправляющие каналы. Но только отправляющие или
+принимающие каналы не могут быть переданы в функцию, требующую двунаправленного
+канала!</p>
+
+<h2>Оператор Select</h2>
+
+<p>В языке Go есть специальный оператор <code>select</code> который работает как <code>switch</code>, но
+для каналов:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">func main() {
+    c1 := make(chan string)
+    c2 := make(chan string)
+
+    go func() {
+        for {
+            c1 &lt;- "from 1"
+            time.Sleep(time.Second * 2)
+        }
+    }()
+    go func() {
+        for {
+            c2 &lt;- "from 2"
+            time.Sleep(time.Second * 3)
+        }
+    }()
+    go func() {
+        for {
+            select {
+            case msg1 := &lt;- c1:
+                fmt.Println(msg1)
+            case msg2 := &lt;- c2:
+                fmt.Println(msg2)
+            }
+        }
+    }()
+
+    var input string
+    fmt.Scanln(&amp;input)
+}
+</code></pre></div>
+<p>Эта программа выводит «from 1» каждые 2 секунды и «from 2» каждые 3 секунды.
+Оператор <code>select</code> выбирает первый готовый канал, и получает сообщение из него,
+или же передает сообщение через него. Когда готовы несколько каналов, получение
+сообщения происходит из случайно выбранного готового канала. Если же ни один из
+каналов не готов, оператор блокирует ход программы до тех пор, пока какой-либо
+из каналов будет готов к отправке или получению.</p>
+
+<p>Обычно <code>select</code> используется для таймеров:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">select {
+case msg1 := &lt;- c1:
+    fmt.Println("Message 1", msg1)
+case msg2 := &lt;- c2:
+    fmt.Println("Message 2", msg2)
+case &lt;- time.After(time.Second):
+    fmt.Println("timeout")
+}
+</code></pre></div>
+<p><code>time After</code> создаёт канал, по которому посылаем метки времени с заданным
+интервалом. В данном случае мы не заинтересованы в значениях временных меток,
+поэтому мы не сохраняем его в переменные. Также мы можем задать команды, которые
+выполняются по умолчанию, используя конструкцию <code>default</code>:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">select {
+case msg1 := &lt;- c1:
+    fmt.Println("Message 1", msg1)
+case msg2 := &lt;- c2:
+    fmt.Println("Message 2", msg2)
+case &lt;- time.After(time.Second):
+    fmt.Println("timeout")
+default:
+    fmt.Println("nothing ready")
+}
+</code></pre></div>
+<p>Выполняемые по умолчанию команды исполняются сразу же, если все каналы заняты.</p>
+
+<h2>Буферизированный канал</h2>
+
+<p>При инициализации канала можно использовать второй параметр:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">c := make(chan int, 1)
+</code></pre></div>
+<p>и мы получим буферизированный канал с ёмкостью <code>1</code>. Обычно каналы работают
+синхронно - каждая из сторон ждёт, когда другая сможет получить или передать
+сообщение. Но буферизованный канал работает асинхронно — получение или отправка
+сообщения не заставляют стороны останавливаться. Но канал теряет пропускную
+способность, когда он занят, в данном случае, если мы отправим в канал 1
+сообщение, то мы не сможем отправить туда ещё одно до тех пор, пока первое не
+будет получено.</p>
+
+<h2>Задачи</h2>
+
+<ul>
+<li><p>Как задать направление канала?</p></li>
+<li><p>Напишите собственную функцию <code>Sleep</code>, используя <code>time.After</code></p></li>
+<li><p>Что такое буферизированный канал? Как создать такой канал с ёмкостью в 20 сообщений?</p></li>
+</ul>
+
+  </article>
+
+  <div class="chapter_navs">
+    
+
+<div class="prevnext">
+  
+    <div class="prevnext_item -prev">&larr; <a href="/chapter-09-structs-and-interfaces.html">Структуры и интерфейсы</a></div>
+  
+
+  
+    <div class="prevnext_item -next"><a href="/chapter-11-packages.html">Пакеты и повторное использование кода</a> &rarr;</div>
+  
+</div>
+
+  </div>
+
+  <div class="ads">
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <ins class="adsbygoogle" style="display:block;width:728px;height:90px" data-ad-client="ca-pub-8928394650916319" data-ad-slot="6541630584"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+
+  <div class="chapter_comments">
+    <div id="disqus_thread"></div>
+<script>
+  (function() {
+    var dsq = document.createElement('script'); dsq.async = true; dsq.src = '//golangbookru.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+  </div>
+</div>
+
+      </div>
+    </main>
+
+    <div class="footer">
+  <div class="footer_container container">
+    <p>Сайт является переводом книги <a href="http://www.doxsey.net" target="_blank">Caleb Doxsey</a> — <a href="http://www.golang-book.com" target="_blank">An introduction to programming in Go</a>, распространяемой на условиях <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons 3.0 Attribution License</a>. Переводчики: <a href="http://zenwalker.ru" target="_blank">Максим Полетаев</a>, <a href="http://rozaev.ru" target="_blank">Виктор Розаев</a> и <a href="https://github.com/zenwalker/golang-book/graphs/contributors">другие</a>.</p>
+  </div>
+</div>
+
+
+    <a class="github-ribbon" href="https://github.com/zenwalker/golang-book"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+
+    <!-- Yandex.Metrika counter --><script type="text/javascript">(function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter27467922 = new Ya.Metrika({id:27467922}); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="//mc.yandex.ru/watch/27467922" style="position:absolute; left:-9999px;" alt="" /></div></noscript><!-- /Yandex.Metrika counter -->
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-57641314-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/shell.min.js"></script>
+  <script type="text/javascript">
+    function hlt() {
+      var nodes = document.querySelectorAll('pre code');
+      nodes.forEach(function(el){
+        var src = el.innerText;
+        var res = hljs.highlightAuto(src, ['golang', 'shell']);
+        el.innerHTML = res.value;
+      });
+    }
+    
+    window.onload=function(){
+      hlt();
+    }
+  </script>
+
+</html>

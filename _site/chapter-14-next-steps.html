@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta property="og:image" content="/img/cover.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Дальнейшие шаги — Введение в программирование на Go</title>
+  <link href="http://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic,700italic&subset=latin,cyrillic" rel="stylesheet">
+
+  <link type="text/css" rel="stylesheet" href="/assets/main.css">
+  
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/darcula.min.css" type="text/css" rel="stylesheet">
+</head>
+
+
+  <body class="page">
+    
+
+    <main class="content">
+      <div class="content_containter container">
+        <div class="chapter">
+  <div class="chapter_header">
+    <a href="/" class="chapter_back">Оглавление</a>
+  </div>
+  <h1 class="chaper_heading">Дальнейшие шаги</h1>
+
+  <article class="chapter_content">
+    <p>Теперь у вас должно быть достаточно знаний, чтобы написать практически любую
+программу на Go. Но опасно делать выводы о том, что теперь вы стали компетентным
+программистом. Программирование — это большое мастерство, достаточно простое,
+если имеются знания. В этой главе я дам вам несколько советов о том, как лучше
+освоить ремесло программирования.</p>
+
+<h2>Учитесь у мастеров</h2>
+
+<p>Частью становления хорошего художника или писателя является изучения работ
+мастеров. Это ничем не отличается от программирования. Один из лучших способов
+стать квалифицированным программистом — это изучение исходного кода, созданного
+другими людьми. Go отлично подходит для этой задачи, поскольку исходный код
+всего проекта находится в свободном доступе.</p>
+
+<p>Например, мы могли бы взглянуть на исходный код библиотеки <code>io/ioutil</code> по
+адресу: <a href="http://golang.org/src/pkg/io/ioutil/ioutil.go">http://golang.org/src/pkg/io/ioutil/ioutil.go</a></p>
+
+<p>Читайте код медленно и осознанно. Постарайтесь понять каждую строку и не
+забывайте про прилагаемые комментарии. Например, в методе <code>ReadFile</code> есть
+комментарий, который гласит:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">// It's a good but not certain bet that FileInfo
+// will tell us exactly how much to read, so
+// let's try it but be prepared for the answer
+// to be wrong.
+</code></pre></div>
+<p>Этот метод наверняка раньше был проще, чем он есть в данный момент. Это отличный
+пример того, как программы могут развиваться после тестирования и насколько
+важно обеспечить комментарием внесённые изменения. Весь исходный код всех
+пакетов можно найти по адресу: <a href="http://golang.org/src/pkg/">http://golang.org/src/pkg/</a></p>
+
+<h2>Делайте что-нибудь</h2>
+
+<p>Один из лучших способов оттачивания своих навыков - это практика написания кода.
+Есть много способов сделать это: вы могли бы поработать над сложными задачками
+по программированию на таких сайтах, как <a href="http://projecteuler.net/">Project Euler</a> или попробовать себя
+в более крупном проекте. Возможно, вы захотите написать веб-сервер или даже
+написать небольшую игру.</p>
+
+<h2>Работайте в команде</h2>
+
+<p>Большая часть программных проектов в реальном мире созданы командами
+программистов. Поэтому умение работать в команде имеет большое значение. Если у
+вас есть заинтересованный друг или одноклассник — возьмите его и объединитесь в
+команду для работы над общим проектом. Узнайте, как разделить проект на части и
+тогда сможете работать над ним в разное время.</p>
+
+<p>Второй вариант заключается в работе над открытым проектом. Найдите какую-нибудь
+стороннюю библиотеку, напишите новую функциональность (или исправьте ошибки) и
+отправьте её мейнтейнеру. У Go есть растущее сообщество, которое взаимодействует
+с помощью <a href="http://groups.google.com/group/golang-nuts">списков рассылки</a>.</p>
+
+  </article>
+
+  <div class="chapter_navs">
+    
+
+<div class="prevnext">
+  
+    <div class="prevnext_item -prev">&larr; <a href="/chapter-13-core-packages.html">Стандартная библиотека</a></div>
+  
+
+  
+</div>
+
+  </div>
+
+  <div class="ads">
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <ins class="adsbygoogle" style="display:block;width:728px;height:90px" data-ad-client="ca-pub-8928394650916319" data-ad-slot="6541630584"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+
+  <div class="chapter_comments">
+    <div id="disqus_thread"></div>
+<script>
+  (function() {
+    var dsq = document.createElement('script'); dsq.async = true; dsq.src = '//golangbookru.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+  </div>
+</div>
+
+      </div>
+    </main>
+
+    <div class="footer">
+  <div class="footer_container container">
+    <p>Сайт является переводом книги <a href="http://www.doxsey.net" target="_blank">Caleb Doxsey</a> — <a href="http://www.golang-book.com" target="_blank">An introduction to programming in Go</a>, распространяемой на условиях <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons 3.0 Attribution License</a>. Переводчики: <a href="http://zenwalker.ru" target="_blank">Максим Полетаев</a>, <a href="http://rozaev.ru" target="_blank">Виктор Розаев</a> и <a href="https://github.com/zenwalker/golang-book/graphs/contributors">другие</a>.</p>
+  </div>
+</div>
+
+
+    <a class="github-ribbon" href="https://github.com/zenwalker/golang-book"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/567c3a48d796e2fc06ea80409cc9dd82bf714434/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png"></a>
+
+    <!-- Yandex.Metrika counter --><script type="text/javascript">(function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter27467922 = new Ya.Metrika({id:27467922}); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="//mc.yandex.ru/watch/27467922" style="position:absolute; left:-9999px;" alt="" /></div></noscript><!-- /Yandex.Metrika counter -->
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-57641314-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/shell.min.js"></script>
+  <script type="text/javascript">
+    function hlt() {
+      var nodes = document.querySelectorAll('pre code');
+      nodes.forEach(function(el){
+        var src = el.innerText;
+        var res = hljs.highlightAuto(src, ['golang', 'shell']);
+        el.innerHTML = res.value;
+      });
+    }
+    
+    window.onload=function(){
+      hlt();
+    }
+  </script>
+
+</html>

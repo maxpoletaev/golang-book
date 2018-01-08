@@ -1,12 +1,11 @@
 # Site
-title:   "Введение в программирование на Go"
-url:     "http://golang-book.ru"
-locale:  "ru"
+title: "Введение в программирование на Go"
+url: "http://golang-book.ru"
+locale: "ru"
 baseurl: ""
 
-# Source
-source:      ./src
-destination: ./build
+exclude:
+  - vendor
 
 # Collections
 collections:
@@ -15,21 +14,21 @@ collections:
     permalink: '/:name.html'
 
 # Build
-permalink:   /:title.html
-markdown:    redcarpet
+permalink: /:title.html
+markdown: redcarpet
 highlighter: null
 
 # Assets
 assets:
-  js_compressor:  uglifier
+  js_compressor: uglifier
   css_compressor: sass
-  cache:          false
+  cache: false
 
 # Assets
 assets:
-  js_compressor:  uglifier
+  js_compressor: uglifier
   css_compressor: sass
-  cache:          false
+  cache: false
 
 # Markdown
 redcarpet:
