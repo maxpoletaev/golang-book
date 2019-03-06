@@ -34,8 +34,8 @@
 import ("fmt"; "math")
 
 func distance(x1, y1, x2, y2 float64) float64 {
-    a := x2 – x1
-    b := y2 – y1
+    a := x2 - x1
+    b := y2 - y1
     return math.Sqrt(a*a + b*b)
 }
 func rectangleArea(x1, y1, x2, y2 float64) float64 {
@@ -128,7 +128,7 @@ fmt.Println(circleArea(&amp;c))
 </code></pre></div>
 <h2>Методы</h2>
 
-<p>Не смотря на то, что программа стала лучше, мы все еще можем значительно её
+<p>Несмотря на то, что программа стала лучше, мы все еще можем значительно её
 улучшить, используя метод — функцию особого типа:</p>
 <div class="highlight"><pre><code class="language-" data-lang="">func (c *Circle) area() float64 {
     return math.Pi * c.r*c.r
@@ -224,7 +224,7 @@ a.Talk()
     return area
 }
 </code></pre></div>
-<p>Мы будет вызывать эту функцию так:</p>
+<p>Мы будем вызывать эту функцию так:</p>
 <div class="highlight"><pre><code class="language-" data-lang="">fmt.Println(totalArea(&amp;c, &amp;r))
 </code></pre></div>
 <p>Интерфейсы также могут быть использованы в качестве полей:</p>
