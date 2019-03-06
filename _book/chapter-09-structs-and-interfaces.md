@@ -225,7 +225,7 @@ layout: "chapter"
         return area
     }
 
-Мы будет вызывать эту функцию так:
+Мы будем вызывать эту функцию так:
 
     fmt.Println(totalArea(&c, &r))
 
