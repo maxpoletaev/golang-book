@@ -14,8 +14,8 @@ layout: "chapter"
 `~/Go/src/golang-book/chapter2` (где `~` означает вашу домашнюю директорию). 
 Вы можете сделать это из терминала с помощью следующих команд:
 
-    mkdir Go/src/golang-book
-    mkdir Go/src/golang-book/chapter2
+    mkdir -p Go/src/golang-book
+    mkdir -p Go/src/golang-book/chapter2
 
 Используя текстовый редактор, введите следующее:
 
